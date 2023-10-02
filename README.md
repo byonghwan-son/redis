@@ -314,3 +314,63 @@ id:91, product_name:Old Sky Pole
 12
 13
 ```
+
+### Sorted Set 타입
+* Set 타입과 동일한 데이터 구조
+* 저장된 값이 분류(Sorting)된 상태
+* 명령어 : zadd, zrange, zcard, zcount, zrank zrevrank
+
+```bash
+127.0.0.1:5000> zadd order_detail:20231001 1 "{product_name:Bunny Boots, item_price:135, qty:500, price:67000}" 2 "{product_name:Pants, item_price:10, qty:200, price:2000}" 3 "{product_name:Sky Pole, item_price:55, qty:100, price:5500}" # 지정한 값 순서대로 저장됨
+3
+
+127.0.0.1:5000> zrange order_detail:20231001 0 -1 # 전체 내용 표시
+{product_name:Bunny Boots, item_price:135, qty:500, price:67000}
+{product_name:Pants, item_price:10, qty:200, price:2000}
+{product_name:Sky Pole, item_price:55, qty:100, price:5500}
+
+127.0.0.1:5000> zadd order_detail:20231001 3 "{product_name:Ski Pants, item_price:100, qty:10, price:1000}" # 4번째로 값을 추가하기
+1
+
+127.0.0.1:5000> zrange order_detail:20231001 0 -1 # 전체 데이터 확인
+{product_name:Bunny Boots, item_price:135, qty:500, price:67000}
+{product_name:Pants, item_price:10, qty:200, price:2000}
+{product_name:Ski Pants, item_price:100, qty:10, price:1000}
+{product_name:Sky Pole, item_price:55, qty:100, price:5500}
+
+127.0.0.1:5000> zcard order_detail:20231001   # 해당 Key로 저장되어 있는 list value 갯수
+4
+
+127.0.0.1:5000> zcount order_detail:20231001 1 3
+4
+
+127.0.0.1:5000> zrem order_detail:20231001 "{product_name:Pants, item_price:10, qty:200, price:2000}" # 지정한 데이터 삭제
+1
+
+127.0.0.1:5000> zrange order_detail:20231001 0 -1 # 삭제된 데이터 확인
+{product_name:Bunny Boots, item_price:135, qty:500, price:67000}
+{product_name:Ski Pants, item_price:100, qty:10, price:1000}
+{product_name:Sky Pole, item_price:55, qty:100, price:5500}
+
+127.0.0.1:5000> zrank order_detail:20231001 "{product_name:Ski Pants, item_price:100, qty:10, price:1000}"
+1
+127.0.0.1:5000> zrank order_detail:20231001 "{product_name:Bunny Boots, item_price:135, qty:500, price:67000}"
+0
+127.0.0.1:5000> zrank order_detail:20231001 "{product_name:Sky Pole, item_price:55, qty:100, price:5500}"
+2
+
+127.0.0.1:5000> zrevrank order_detail:20231001 "{product_name:Sky Pole, item_price:55, qty:100, price:5500}" # 저장된 rank의 reverse rank
+0
+127.0.0.1:5000> zrevrank order_detail:20231001 "{product_name:Ski Pants, item_price:100, qty:10, price:1000}"
+1
+127.0.0.1:5000> zrevrank order_detail:20231001 "{product_name:Bunny Boots, item_price:135, qty:500, price:67000}"
+2
+
+127.0.0.1:5000> zscore order_detail:20231001 "{product_name:Sky Pole, item_price:55, qty:100, price:5500}" #데이터가 저장된 시점의 value의 Score(position) rank와 score는 다른 의미임.
+3
+127.0.0.1:5000> zscore order_detail:20231001 "{product_name:Ski Pants, item_price:100, qty:10, price:1000}"
+3
+127.0.0.1:5000> zscore order_detail:20231001 "{product_name:Bunny Boots, item_price:135, qty:500, price:67000}"
+1
+
+```
