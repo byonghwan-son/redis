@@ -374,3 +374,38 @@ id:91, product_name:Old Sky Pole
 1
 
 ```
+
+### Bit 타입
+* 0과 1을 저장
+* 명령어 : setbit, getbit, bitcount
+
+### Geo 타입
+* 지리정보를 저장
+* geoadd, geopos, geodist, georadius, geohash
+
+### HyperLogLogs 타입
+* 관계형 DB의 테이블 구조에서 Check제약조건과 유사한 개념
+* 해당 컬럼에 반드시 저장되어야 하는 값 만을 저장할 때 사용
+* 필요에 따라 연결(Link)하여 사용할 수 있는 데이터 타입
+* 명령어 : pfadd, pfcount, pfmerge
+
+```bash
+127.0.0.1:5000> pfadd domestic_city "Seoul" "Busan" "Daejeon" "Gwangju" "Daegu" "Ulsan"
+1
+127.0.0.1:5000> pfadd foreign_city "Los Angeles" "San Diego" "New York" "Washington"
+1
+127.0.0.1:5000> pfadd credit_type "cach" "credit card" "point" "check" "cash"
+1
+
+127.0.0.1:5000> pfcount credit_type
+5
+127.0.0.1:5000> pfcount domestic_city
+6
+127.0.0.1:5000> pfcount foreign_city
+4
+
+127.0.0.1:5000> pfmerge international_city domestic_city foreign_city
+OK
+127.0.0.1:5000> pfcount international_city
+10
+```
