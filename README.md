@@ -2,6 +2,7 @@
 
 * redis파일 다운 로드
   [redis 파일 다운로드](https://download.redis.io/redis-stable.tar.gz)
+
 ```bash
 $ sudo useradd redis -m 
 
@@ -34,14 +35,15 @@ $ src/redis-cli -p 5000
 $ src/redis-cli -p 5000 --raw   # 한글 처리를 위해 필요 (--raw)
 ```
 
-
 * 서버를 실행했을 때 워닝 발생함(log파일 참조)
   * 메모리 부족으로 문제가 발생할 수 있으니 메모리 확장이 가능한 환경으로 변경하라는 요청이 있음
+
 > sudo sysctl vm.overcommit_memory=1
 
 ---
 
 ## 용어 설명
+
 1. Table : 하나의 DB에서 데이터를 저장하는 논리적 구조 
 2. Data Sets : 테이블을 구성하는 논리적 단위. \
 하나의 데이타 넷은 하나의 key와 한 개 이상의 Field/Element로 구성
@@ -49,6 +51,7 @@ $ src/redis-cli -p 5000 --raw   # 한글 처리를 위해 필요 (--raw)
 4. Values : 해당 Key에 대한 구체적인 데이터 값을 표현
 
 ## 데이터 입력 / 수정 / 삭제 / 조회
+
 |종류|내용|
 |-|-|
 | set | 데이터를 저장할 때 (key, value)|
@@ -66,8 +69,8 @@ $ src/redis-cli -p 5000 --raw   # 한글 처리를 위해 필요 (--raw)
 | append | 현재 value에 다른 값을 추가 |
 | save | 현재 입력한 key/value 값을 파일로 저장 (dump.rdb)
 
-
 ## 데이터 타입
+
 |종류|내용|
 |-|-|
 |strings|문자(text), Binary 유형 데이터를 저장|
@@ -79,9 +82,11 @@ $ src/redis-cli -p 5000 --raw   # 한글 처리를 위해 필요 (--raw)
 |Geospatial|좌표 데이터를 저장 및 관리하는 데이터 타입|
 
 * 타입확인하기
+
 > $ TYPE [key]
 
 ### Hash 타입
+
 * 기존 관계형 DB에서 Primary Key와 하나 이상의 컬럼으로 구성된 테이블 구조와 유사함.
 * Key는 [오브젝트명]:[하나 이상의 필드값]으로 표현
 * 필드 갯수 제한 없음
@@ -160,6 +165,7 @@ Y
 ```
 
 ### List 타입
+
 * 일반적은 프로그래밍 언어에서 데이터를 처리할 때 사용되는 배열(array) 변수와 유사한 데이터 구조
 * String 타입의 경우 배열에 저장할 수 있는 데이터 크기는 512M
 * List타입은 하나의 Key에 여러 개의 value를 저장할 수 있음.
@@ -226,6 +232,7 @@ OK
 ```
 
 ### Set 타입
+
 * 배열구조가 아닌 여러 개의 Element로 데이터 값을 표현하는 구조
 * 명령어 : sadd, smembers, scard, sdiff, sunion
 
@@ -316,6 +323,7 @@ id:91, product_name:Old Sky Pole
 ```
 
 ### Sorted Set 타입
+
 * Set 타입과 동일한 데이터 구조
 * 저장된 값이 분류(Sorting)된 상태
 * 명령어 : zadd, zrange, zcard, zcount, zrank zrevrank
@@ -376,14 +384,17 @@ id:91, product_name:Old Sky Pole
 ```
 
 ### Bit 타입
+
 * 0과 1을 저장
 * 명령어 : setbit, getbit, bitcount
 
 ### Geo 타입
+
 * 지리정보를 저장
 * geoadd, geopos, geodist, georadius, geohash
 
 ### HyperLogLogs 타입
+
 * 관계형 DB의 테이블 구조에서 Check제약조건과 유사한 개념
 * 해당 컬럼에 반드시 저장되어야 하는 값 만을 저장할 때 사용
 * 필요에 따라 연결(Link)하여 사용할 수 있는 데이터 타입
